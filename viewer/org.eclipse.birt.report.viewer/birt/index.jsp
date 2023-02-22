@@ -68,19 +68,31 @@
 							String[] versionParts = javaVersion.split("\\.");
 							int majorVersion = 0;
 							int minorVersion = 0;
+
 							try
 							{
-								majorVersion = Integer.parseInt(versionParts[0]);		
-								minorVersion = Integer.parseInt(versionParts[1]);
-								if ( majorVersion < 1 || ( majorVersion == 1 && minorVersion < 5 ) )
+								if (versionParts.length != 2) 
 								{
-									javaVersionMessage = "<span class=\"warningMessage\">" + javaVersion + " (WARNING: BIRT " + viewerVersion + " only supports JRE versions >= 1.5)</span>";
+									// Greater than Java 9.
+									majorVersion = Integer.parseInt(versionParts[0]);
+								}
+								else
+								{
+									majorVersion = Integer.parseInt(versionParts[0]);        
+									minorVersion = Integer.parseInt(versionParts[1]);
 								}
 							}
 							catch (NumberFormatException e)
 							{
-							
+
 							}
+
+
+							if ( majorVersion < 1 || ( majorVersion == 1 && minorVersion < 5 ) )
+							{
+								javaVersionMessage = "<span class=\"warningMessage\">" + javaVersion + " (WARNING: BIRT " + viewerVersion + " only supports JRE versions >= 1.5)</span>";
+							}
+
 						%>
 						<p>JRE version: <%= javaVersionMessage  %></p>
 						<p><a href="<%= request.getContextPath( ) + "/frameset?__report=test.rptdesign&sample=my+parameter" %>">View Example</a>
